@@ -1,0 +1,19 @@
+_target_: src.models.lrw_module.LRWLitModule
+
+optimizer:
+  _target_: torch.optim.Adam
+  _partial_: true
+  lr: 0.0003
+  weight_decay: 0.0
+
+net:
+  _target_: src.models.components.lrw_net.LRWNet
+  border: False
+  n_classes: 500
+  se: True
+  in3d: 1
+  out3d: 64
+  rec_hidsize: 768
+  rec_stack: 2
+  rec_biderectional: True
+  dropout: 0.3

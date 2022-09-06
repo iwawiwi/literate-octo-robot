@@ -1,0 +1,34 @@
+# @package _global_
+
+# to execute this experiment run:
+# python train.py experiment=example
+
+defaults:
+  - override /datamodule: lrw.yaml
+  - override /model: lrw.yaml
+  - override /callbacks: default.yaml
+  - override /trainer: overfit_batch.yaml
+
+# all parameters below will be merged with parameters from default configurations set above
+# this allows you to overwrite only specified parameters
+
+tags: ["lrw", "lrw_net"]
+
+seed: 906
+
+trainer:
+  min_epochs: 1
+  max_epochs: 1
+  gradient_clip_val: 0.5
+
+model:
+  optimizer:
+    lr: 0.0001
+
+datamodule:
+  batch_size: 16
+
+logger:
+  wandb:
+    tags: ${tags}
+    group: "lrw"
