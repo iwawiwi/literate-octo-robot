@@ -25,6 +25,7 @@ class MNISTLitModule(LightningModule):
         self,
         net: torch.nn.Module,
         optimizer: torch.optim.Optimizer,
+        scheduler: torch.optim.lr_scheduler._LRScheduler = None,
     ):
         super().__init__()
 
@@ -114,8 +115,15 @@ class MNISTLitModule(LightningModule):
         Examples:
             https://pytorch-lightning.readthedocs.io/en/latest/common/lightning_module.html#configure-optimizers
         """
+        optimizer = self.hparams.optimizer(params=self.parameters())
+        if self.hparams.scheduler is not None:
+            scheduler = self.hparams.scheduler(
+                optimizer=optimizer,
+            )
+
         return {
-            "optimizer": self.hparams.optimizer(params=self.parameters()),
+            "optimizer": optimizer,
+            "lr_scheduler": scheduler if self.hparams.scheduler is not None else None,
         }
 
 

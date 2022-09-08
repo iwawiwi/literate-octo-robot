@@ -6,7 +6,8 @@
 defaults:
   - override /datamodule: mnist.yaml
   - override /model: mnist.yaml
-  - override /callbacks: default.yaml
+  - override /callbacks: lr_monitor.yaml
+  - override /logger: wandb.yaml
   - override /trainer: default.yaml
 
 # all parameters below will be merged with parameters from default configurations set above
@@ -18,12 +19,16 @@ seed: 12345
 
 trainer:
   min_epochs: 10
-  max_epochs: 10
+  max_epochs: 20
   gradient_clip_val: 0.5
 
 model:
   optimizer:
     lr: 0.002
+  scheduler:
+    _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+    _partial_: true
+    T_max: 20
   net:
     lin1_size: 128
     lin2_size: 256
@@ -31,6 +36,7 @@ model:
 
 datamodule:
   batch_size: 64
+  num_workers: 8
 
 logger:
   wandb:
