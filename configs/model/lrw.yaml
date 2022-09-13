@@ -6,6 +6,12 @@ optimizer:
   lr: 0.0003
   weight_decay: 0.0
 
+scheduler:
+  _target_: torch.optim.lr_scheduler.CosineAnnealingLR
+  _partial_: true
+  T_max: 10
+  eta_min: 0.0001
+
 net:
   _target_: src.models.components.lrw_net.LRWNet
   border: False

@@ -25,6 +25,7 @@ class LRWLitModule(LightningModule):
         self,
         net: torch.nn.Module,
         optimizer: torch.optim.Optimizer,
+        scheduler: torch.optim.lr_scheduler._LRScheduler,
     ):
         super().__init__()
 
@@ -114,8 +115,20 @@ class LRWLitModule(LightningModule):
         Examples:
             https://pytorch-lightning.readthedocs.io/en/latest/common/lightning_module.html#configure-optimizers
         """
+        # FIXME: this is a workaround for, not sure if it works or not!
+        optimizer = self.hparams.optimizer(params=self.parameters())
+        scheduluer = self.hparams.scheduler(
+            optimizer,
+        )
         return {
-            "optimizer": self.hparams.optimizer(params=self.parameters()),
+            "optimizer": optimizer,
+            "lr_scheduler": {
+                "scheduler": scheduluer,
+                "interval": "epoch",
+                "monitor": "val/loss",
+                "strict": True,
+                "name": "learning_rate",
+            },
         }
 
 

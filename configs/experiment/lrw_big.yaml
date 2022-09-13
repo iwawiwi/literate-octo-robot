@@ -14,15 +14,19 @@ defaults:
 
 tags: ["lrw", "lrw_net"]
 
-seed: 907
+seed: 906
 
 trainer:
-  min_epochs: 5
-  max_epochs: 10
+  min_epochs: 1
+  max_epochs: 1
   gradient_clip_val: 0.5
 
+model:
+  optimizer:
+    lr: 0.0001
+
 datamodule:
-  batch_size: 32
+  batch_size: 16
 
 logger:
   wandb:
